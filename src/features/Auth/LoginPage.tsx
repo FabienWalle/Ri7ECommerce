@@ -1,19 +1,25 @@
+
+import Spinner from "@/components/Spinner";
 import { useLoginMutation } from "@/store/api/authSlice";
-import { TEInput, TERipple } from "tw-elements-react";
+import { useNavigate } from "react-router-dom";
+
 
 const LoginPage = () => {
+  const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     try {
-      await login({
+      const response = await login({
         username: "mor_2314",
         password: "83r5^_"
-      })
-        .then((payload) => console.log('fulfilled', payload))
-        .catch((error) => console.error('rejected', error))
-
+      }).unwrap()
+      if (response.token) {
+        localStorage.setItem("token", response.token);
+        navigate('/main');
+      } else {
+        console.log("Token not found in the response");
+      }
     } catch (error) {
       console.log(error);
 
@@ -21,94 +27,35 @@ const LoginPage = () => {
   };
 
   return (
-    <section className="h-full bg-neutral-200 dark:bg-neutral-700">
-      <div className="container h-full p-10">
-        <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
-          <div className="w-full">
-            <div className="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
-              <div className="g-0 lg:flex lg:flex-wrap">
-
-                <div className="px-4 md:px-0 lg:w-6/12">
-                  <div className="md:mx-6 md:p-12">
-
-                    <div className="text-center">
-                      <img
-                        className="mx-auto w-48"
-                        src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                        alt="logo"
-                      />
-                      <h4 className="mb-12 mt-1 pb-1 text-xl font-semibold">
-                        We are The Lotus Team
-                      </h4>
-                    </div>
-
-                    <form>
-                      <p className="mb-4">Please login to your account</p>
-
-                      <TEInput
-                        type="text"
-                        label="Username"
-                        autoComplete="Username"
-                        className="mb-4"
-                      ></TEInput>
-
-
-                      <TEInput
-                        type="password"
-                        autoComplete="password"
-                        label="Password"
-                        className="mb-4"
-                      ></TEInput>
-
-
-                      <div className="mb-12 pb-1 pt-1 text-center">
-                        <TERipple rippleColor="light" className="w-full">
-                          <button
-                            className="mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
-                            type="button"
-                            onClick={(e) => handleLogin(e)}
-                            style={{
-                              background:
-                                "linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)",
-                            }}
-                          >
-                            Log in
-                          </button>
-                        </TERipple>
-
-                      </div>
-
-
-
-                    </form>
-                  </div>
-                </div>
-
-                <div
-                  className="flex items-center rounded-b-lg lg:w-6/12 lg:rounded-r-lg lg:rounded-bl-none"
-                  style={{
-                    background:
-                      "linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)",
-                  }}
-                >
-                  <div className="px-4 py-6 text-white md:mx-6 md:p-12">
-                    <h4 className="mb-6 text-xl font-semibold">
-                      We are more than just a company
-                    </h4>
-                    <p className="text-sm">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div className="relative flex flex-col justify-center h-screen overflow-hidden">
+      <div className="w-full p-6 m-auto bg-white rounded-md shadow-md ring-2 ring-gray-800/50 lg:max-w-lg">
+        <h1 className="text-3xl font-semibold text-center text-gray-700">DaisyUI</h1>
+        <form className="space-y-4" onSubmit={e => {
+          e.preventDefault();
+          handleLogin();
+        }}>
+          <div>
+            <label className="label">
+              <span className="text-base label-text">Email</span>
+            </label>
+            <input type="text" placeholder="Email Address" className="w-full input input-bordered" autoComplete="off" />
           </div>
-        </div>
+          <div>
+            <label className="label">
+              <span className="text-base label-text">Password</span>
+            </label>
+            <input type="password" placeholder="Enter Password"
+              className="w-full input input-bordered" autoComplete="off" />
+          </div>
+          <a href="#" className="text-xs text-gray-600 hover:underline hover:text-blue-600">Forget Password?</a>
+          <div>
+            <button className="btn btn-block" type="submit">
+              {isLoading ? <Spinner isLoading={isLoading} loaderType="spinner" /> : "Login"}
+            </button>
+          </div>
+        </form>
       </div>
-    </section>
+    </div>
   );
 }
 
