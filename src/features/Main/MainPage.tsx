@@ -21,7 +21,8 @@ const MainPage = () => {
 
     const displayedProducts = searchTerm
         ? products?.filter(product => product.title.toLowerCase().includes(searchTerm.toLowerCase()))
-        : selectedCategory ? productsByCategory : products;
+        : selectedCategory 
+            ? productsByCategory : products;
 
     return (
         <MainLayout>

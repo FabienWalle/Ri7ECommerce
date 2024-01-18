@@ -8,15 +8,15 @@ const CartPage = () => {
     const dispatch = useDispatch();
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const totalPrice = cartItems.reduce((total, item) => total + (item.quantity * item.price), 0);
-    const handleIncrement = (productId:number) => {
+    const handleIncrement = (productId: number) => {
         dispatch(incrementQuantity(productId));
     };
 
-    const handleDecrement = (productId:number) => {
+    const handleDecrement = (productId: number) => {
         dispatch(decrementQuantity(productId));
     };
 
-    const handleRemove = (productId:number) => {
+    const handleRemove = (productId: number) => {
         dispatch(removeFromCart(productId));
     };
     return (
@@ -34,26 +34,25 @@ const CartPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                {cartItems.map((item, index) => (
-                    <tr key={index} className='hover'>
-                        <td className='text-center'>{item.title}</td>
-                        <td className='text-center'>
-                            <button onClick={() => handleDecrement(item.productId)} className='btn btn-error btn-outline btn-sm'>-</button>
-                           <button className='btn btn-sm'>{item.quantity}</button> 
-                            <button onClick={() => handleIncrement(item.productId)} className='btn btn-info btn-outline btn-sm'>+</button>
-                        </td>
-                        <td className='text-center'>{item.price} €</td>
-                        <td className='text-center'>{(item.quantity * item.price).toFixed(2)} €</td>
-                        <td className='text-center'>
-                            <button onClick={() => handleRemove(item.productId)}>
-                                <TrashIcon className="h-6 w-6 text-error" />
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
+                            {cartItems.map((item, index) => (
+                                <tr key={index} className='hover'>
+                                    <td className='text-center'>{item.title}</td>
+                                    <td className='text-center'>
+                                        <button onClick={() => handleDecrement(item.productId)} className='btn btn-error btn-outline btn-sm'>-</button>
+                                        <button className='btn btn-sm'>{item.quantity}</button>
+                                        <button onClick={() => handleIncrement(item.productId)} className='btn btn-info btn-outline btn-sm'>+</button>
+                                    </td>
+                                    <td className='text-center'>{item.price} €</td>
+                                    <td className='text-center'>{(item.quantity * item.price).toFixed(2)} €</td>
+                                    <td className='text-center'>
+                                        <button onClick={() => handleRemove(item.productId)}>
+                                            <TrashIcon className="h-6 w-6 text-error" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </table>
-                   
                     <div className="text-right">
                         <b>Total: {totalPrice.toFixed(2)} €</b>
                     </div>
