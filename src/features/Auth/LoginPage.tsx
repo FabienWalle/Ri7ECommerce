@@ -1,11 +1,18 @@
 
 import Spinner from "@/components/Spinner";
 import { useLoginMutation } from "@/store/api/authSlice";
+import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation();
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "token",
+    "refresh_token",
+    "user_id",
+    "role",
+  ]);
 
   const handleLogin = async () => {
     try {
@@ -14,7 +21,7 @@ const LoginPage = () => {
         password: "83r5^_"
       }).unwrap()
       if (response.token) {
-        localStorage.setItem("token", response.token);
+        setCookie('token', response.token, { httpOnly: true, secure: true })
         navigate('/main');
       } else {
         console.log("Token not found in the response");

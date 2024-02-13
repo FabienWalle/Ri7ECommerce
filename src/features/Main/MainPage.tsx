@@ -3,10 +3,11 @@ import CategoriesSkeleton from "@/components/Skeletons/CategoriesSkeleton";
 import ProductsSkeleton from "@/components/Skeletons/ProductsSkeleton";
 import MainLayout from "@/layouts/MainLayout";
 import { useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductsQuery } from "@/store/api/productsSlice";
+import { Product } from "@/types/ProductTypes";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { FC, Key, useDeferredValue, useState } from "react";
 
-const MainPage = () => {
+const MainPage:FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const { data: products, isLoading: isLoadingProducts } = useGetProductsQuery();
     const { data: categories, isLoading: isLoadingCategoryProducts } = useGetCategoriesQuery();
@@ -19,8 +20,8 @@ const MainPage = () => {
         setSelectedCategory(category);
     };
 
-    const displayedProducts = searchTerm
-        ? products?.filter(product => product.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    const displayedProducts = useDeferredValue(searchTerm)
+        ? products?.filter((product: { title: string; }) => product.title.toLowerCase().includes(searchTerm.toLowerCase()))
         : selectedCategory 
             ? productsByCategory : products;
 
@@ -33,7 +34,7 @@ const MainPage = () => {
 
                 {isLoadingCategoryProducts ? <CategoriesSkeleton /> : (
                     <div className="grid grid-cols-4 gap-4 p-4">
-                        {categories?.map((category, index) => (
+                        {categories?.map((category : string, index: Key ) => (
                             <div key={index} className="flex items-center justify-between border-2 border-black rounded-md p-2"
                                 onClick={() => handleCategoryClick(category)}>
                                 <span className="text-left">{category}</span>
@@ -65,7 +66,7 @@ const MainPage = () => {
                     </span>
                     {(isLoadingProducts || isLoadingProductsByCategory) ? <ProductsSkeleton /> : (
                         <div className="grid grid-cols-3 gap-2">
-                            {(searchTerm ? displayedProducts : (selectedCategory ? productsByCategory : products))?.map((product, index) => (
+                            {(searchTerm ? displayedProducts : (selectedCategory ? productsByCategory : products))?.map((product:Product, index:Key) => (
                                 <Card key={index} product={product} />
                             ))}
                         </div>

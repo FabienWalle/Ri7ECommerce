@@ -1,6 +1,7 @@
 import Spinner from "@/components/Spinner";
 import MainLayout from "@/layouts/MainLayout";
 import { useDeleteProductMutation, useGetProductsQuery } from "@/store/api/productsSlice";
+import { Product } from "@/types/ProductTypes";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
 const AdminPage = () => {
@@ -8,7 +9,7 @@ const AdminPage = () => {
     const [deleteProduct] = useDeleteProductMutation();
 
     const handleDelete = async (id: number) => {
-        await deleteProduct(id).unwrap();
+        await deleteProduct({id}).unwrap();
     };
 
     return (
@@ -31,7 +32,7 @@ const AdminPage = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {products && products.map((product) => (
+                                    {products && products.map((product:Product) => (
                                         <tr key={product.id} className="hover text-center">
                                             <td>{product.id}</td>
                                             <td>{product.title}</td>

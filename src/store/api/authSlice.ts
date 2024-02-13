@@ -5,7 +5,7 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://fakestoreapi.com/' }),
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: (credentials) => ({
+      query: (credentials: any) => ({
         url: 'auth/login',
         method: 'POST',
         body: credentials,
