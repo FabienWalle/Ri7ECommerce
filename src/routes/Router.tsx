@@ -3,6 +3,7 @@ import LoginPage from "@/features/Auth/LoginPage"
 import CartPage from "@/features/Cart/CartPage"
 import MainPage from "@/features/Main/MainPage"
 import AdminPage from "@/features/Admin/AdminPage"
+import ProductPage from "@/features/Product/ProductPage"
 
 const Router: React.FC = () => {
     return (
@@ -13,6 +14,7 @@ const Router: React.FC = () => {
                 <Route path="/main" element={<MainPage />} />
                 <Route path="/cart" element={<CartPage/>}/>
                 <Route path="/admin" element={<AdminPage/>}/>
+                <Route path="/product/:id" element={<ProductPage/>}/>
             </Routes>
         </BrowserRouter>
     )

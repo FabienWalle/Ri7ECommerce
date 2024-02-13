@@ -1,7 +1,8 @@
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom'; 
 import { addToCart } from "@/store/states/cart.slice";
 import { Product } from "@/types/ProductTypes";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
 
 interface CardProps {
     product: Product;
@@ -10,8 +11,10 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ product }) => {
     const [quantity, setQuantity] = useState(0);
     const dispatch = useDispatch();
+    const navigate = useNavigate(); 
 
-    const handleAddToCart = () => {
+    const handleAddToCart = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.stopPropagation(); 
         if (quantity > 0) {
             dispatch(addToCart({
                 productId: product.id,
@@ -22,15 +25,22 @@ const Card: React.FC<CardProps> = ({ product }) => {
         }
     };
 
-    const handleIncrement = () => {
+    const handleIncrement = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.stopPropagation(); 
         setQuantity(prevQuantity => (prevQuantity < 10 ? prevQuantity + 1 : prevQuantity));
     };
 
-    const handleDecrement = () => {
+    const handleDecrement = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.stopPropagation(); 
         setQuantity(prevQuantity => (prevQuantity > 0 ? prevQuantity - 1 : prevQuantity));
     };
+
+    const navigateToProductDetail = () => {
+        navigate(`/product/${product.id}`);
+    };
+
     return (
-        <div className="card bg-base-100 shadow-xl h-[600px] w-full">
+        <div className="card bg-base-100 shadow-xl h-[600px] w-full" onClick={navigateToProductDetail}>
             <div className="h-full flex flex-col justify-around">
                 <figure className=" w-40 max-w-[200px] m-auto h-1/2">
                     <img src={product.image} alt={product.title} />
@@ -54,9 +64,7 @@ const Card: React.FC<CardProps> = ({ product }) => {
                         <button className="btn btn-primary" onClick={handleAddToCart}>Add to Cart</button>
                     </div>
                 </div>
-
             </div>
-
         </div>
     );
 };
