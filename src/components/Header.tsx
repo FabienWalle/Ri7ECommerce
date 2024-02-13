@@ -16,7 +16,7 @@ const Header = () => {
     };
     const theme = useSelector((state: RootState) => state.theme.theme);
     const cartItems = useSelector((state: RootState) => state.cart.items);
-    const subtotal = cartItems.reduce((total, item) => total + (item.quantity * item.price), 0).toFixed(2);
+    const subtotal = cartItems.reduce((total: number, item: { quantity: number; price: number; }) => total + (item.quantity * item.price), 0).toFixed(2);
     const itemCount = cartItems.length;
 
     const handleThemeChange = () => {

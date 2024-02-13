@@ -65,7 +65,7 @@ const MainPage:FC = () => {
                         </div>
                     </span>
                     {(isLoadingProducts || isLoadingProductsByCategory) ? <ProductsSkeleton /> : (
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-3 gap-4 mx-auto">
                             {(searchTerm ? displayedProducts : (selectedCategory ? productsByCategory : products))?.map((product:Product, index:Key) => (
                                 <Card key={index} product={product} />
                             ))}

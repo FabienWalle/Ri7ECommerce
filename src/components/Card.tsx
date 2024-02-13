@@ -30,7 +30,7 @@ const Card: React.FC<CardProps> = ({ product }) => {
         setQuantity(prevQuantity => (prevQuantity > 0 ? prevQuantity - 1 : prevQuantity));
     };
     return (
-        <div className="card bg-base-100 shadow-xl h-[600px] w-[290px]">
+        <div className="card bg-base-100 shadow-xl h-[600px] w-full">
             <div className="h-full flex flex-col justify-around">
                 <figure className=" w-40 max-w-[200px] m-auto h-1/2">
                     <img src={product.image} alt={product.title} />
